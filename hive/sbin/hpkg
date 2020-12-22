@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . colors
+[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
 
 #------------------------------------------------------------------------------------------------------------------
 
@@ -188,11 +189,11 @@ elif [[ $1 == "check" ]]; then
 elif [[ $1 == "fix" ]]; then
 	fix_packages
 else
-	echo -e "${CYAN}Hive Package Manager${NOCOLOR}
+	echo -e "${CYAN}$BRAND Package Manager${NOCOLOR}
 ${YELLOW}update${NOCOLOR} - update packages list from repository
 ${YELLOW}check${NOCOLOR} - check for broken packages
 ${YELLOW}fix${NOCOLOR} - reinstall broken packages
-${YELLOW}list${NOCOLOR} - list all installed hive packages
+${YELLOW}list${NOCOLOR} - list all installed $BRAND packages
 ${YELLOW}list miners${NOCOLOR} - list only miners packages
 ${YELLOW}getlist${NOCOLOR} - list without versions
 ${YELLOW}remove miners${NOCOLOR} - uninstall miners

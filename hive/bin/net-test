@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . colors
+[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
 
 [[ -e $RIG_CONF ]] && . $RIG_CONF
 
@@ -231,7 +232,7 @@ function Connections {
 	[[ -z $API_HOST ]] && echo -e $ERROR_COLOR"No API server defined in rig.conf"$NOCOLOR && exit 1
 
 	if [[ "$API_HOST" =~ hiveos.farm$ ]]; then
-		echo -e "${YELLOW}> Checking connection to HIVE OS server:${NOCOLOR}"
+		echo -e "${YELLOW}> Checking connection to $BRAND server:${NOCOLOR}"
 		Connection "hiveos.farm" "" " "
 
 		#echo

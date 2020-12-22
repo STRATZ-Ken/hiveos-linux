@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. colors
+[ -t 1 ] && source colors
+[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
 
 VERS="0.1.1"
 
@@ -23,7 +24,7 @@ get_cpu_temp () {
 }
 
 print_help(){
-    echo -e "${CYAN}Hive cpu-temp Helper v$VERS"
+    echo -e "${CYAN}$BRAND cpu-temp Helper v$VERS"
     echo -e "${WHITE}This tool shows CPU temp."
     echo
     echo -e "${YELLOW}Usage:"

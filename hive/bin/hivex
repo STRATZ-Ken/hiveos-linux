@@ -5,8 +5,8 @@
 source /etc/environment
 [[ -f $RIG_CONF ]] && . $RIG_CONF
 
-[[ $X_DISABLED == 1 || $MAINTENANCE == 2 ]] && 
-	echo "X Server is disabled, exiting" && 
+[[ $X_DISABLED == 1 || $MAINTENANCE == 2 ]] &&
+	echo "X Server is disabled, exiting" &&
 	exit 0
 
 
@@ -23,7 +23,7 @@ sudo -i xinit /hive/etc/xinitrc
 exitcode=$?
 
 echo ""
-echo "xinit exited (exitcode=$exitcode), starting hive-console"
+echo "xinit exited (exitcode=$exitcode), starting console"
 
 #xinit failed, so no OC was run, do it now
 #it does not work here

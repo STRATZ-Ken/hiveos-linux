@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . colors
+[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
 [[ ! -f /hive-config/.DISKLESS_AMD ]] && echo -e "${RED}Only for server upgrade${NOCOLOR}" && exit 0
 [[ -f /hive-config/.DISKLESS_AMD && $(cat /proc/mounts | grep "/ " | awk '{print $1}') == tmpfs ]] && echo -e "${RED}Diskless rig. Selfupgrade restricted${NOCOLOR}" && exit 0
 
@@ -37,7 +38,7 @@ hpkg update || exit $?
 if [[ -z $VERSION ]]; then #no target version
 	updateavail=`apt list --upgradable 2>&1 | grep '^hive' | wc -l`
 	if [[ $updateavail == 0 ]]; then
-		echo -e "${GREEN}Hive is up to date already${NOCOLOR}"
+		echo -e "${GREEN}$BRAND is up to date already${NOCOLOR}"
 		[[ -e /hive-config/RepoVer ]] && oldrepover=`cat /hive-config/RepoVer` || oldrepover=0
 
 		repover-touch

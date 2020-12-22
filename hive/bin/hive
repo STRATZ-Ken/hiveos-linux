@@ -14,6 +14,8 @@ export HOME=/home/user #required by ccminer
 #[ -t 1 ] &&
 . colors #use them anyway
 
+[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+
 #Check diskless
 DISKLESS=0
 [[ -f /hive-config/.DISKLESS_AMD && $(cat /proc/mounts | grep "/ " | awk '{print $1}') == tmpfs ]] && DISKLESS=1
@@ -48,16 +50,15 @@ fi
 if [[ -e /hive-config/branding-logo.txt ]]; then
 	BRANDING_LOGO=$(cat /hive-config/branding-logo.txt; echo .) #echo . to preserve new lines
 	BRANDING_LOGO=${BRANDING_LOGO%.} #remove last .
-else
-	BRANDING_LOGO="
- _______ _______ ___ ___ _______
+elif [[ -z $BRANDING_LOGO ]]; then
+	BRANDING_LOGO="${BYELLOW}
+_______ _______ ___ ___ _______
 |   |   |_     _|   |   |    ___|
 |       |_|   |_|   |   |    ___|
 |___|___|_______|\_____/|_______|
-
+${NOCOLOR}
 "
 fi
-BRANDING_LOGO="${BYELLOW}${BRANDING_LOGO}${NOCOLOR}"
 
 
 #Check for proxy var. Or agent and others started from here will not see it
@@ -152,7 +153,7 @@ if [[ ! -z $RIG_ID && ! -z $RIG_PASSWD && ! -z $HIVE_HOST_URL ]]; then
 	request=`jq -c -n --arg rig_id "$RIG_ID" --arg passwd "$RIG_PASSWD" '{"method":"get_options","params":{"rig_id": $rig_id,"passwd": $passwd}}' 2>/dev/null`
 	response=`echo "$request" | curl --insecure -L --data @- --connect-timeout 7 --max-time 15 --silent -XPOST "$HIVE_HOST_URL/worker/api" -H "Content-Type: application/json"`
 	if [[ $exitcode -ne 0 ]]; then
-		echo -e "${RED}Connection to Hive server '$HIVE_HOST_URL' failed ($exitcode)${NOCOLOR}"
+		echo -e "${RED}ERROR: connection to API server ($HIVE_HOST_URL) failed ($exitcode)${NOCOLOR}"
 	else
 		_IFS=$IFS; IFS=$'\n'
 		res=(`echo "$response" | jq -c -r '.error.code, .result.disable_gui, .result.maintenance_mode, .error.message' 2>/dev/null`)
@@ -293,6 +294,8 @@ fi
 echo2 "> Starting agent screen"
 agent-screen start
 
+#starting average hashrate calculating service
+avg_khs start
 
 #remove previous log file for Nvidia OC
 [[ -e /var/log/nvidia-oc.log ]] && rm /var/log/nvidia-oc.log
@@ -312,7 +315,7 @@ echo2 "`xorg-conf`"
 
 # Nvidia OC will be run by xinit
 if [[ $X_DISABLED == 0 && $DISKLESS != 1 && $MAINTENANCE != 2 ]]; then
-	echo2 "> Starting HiveX"
+	echo2 "> Starting X Server"
 	systemctl start hivex
 
 	#give X server some time or nvidia-settings could throw an error
@@ -343,10 +346,10 @@ if [[ $X_DISABLED == 0 && $DISKLESS != 1 && $MAINTENANCE != 2 ]]; then
 			done
 		fi
 	fi
-	
+
 	pgrep Xorg >/dev/null
 	if [[ $? -ne 0 ]]; then
-		echo2 "\n\n${RED}It seems X server failed to run.\nThis can happen with some GPUs and buggy drivers.\nBut you still can use Hive in console.${NOCOLOR}\n"
+		echo2 "\n\n${RED}It seems X server failed to run.\nThis can happen with some GPUs and buggy drivers.\nBut you still can use $BRAND in console.${NOCOLOR}\n"
 		sleep 3
 	fi
 fi
@@ -397,7 +400,7 @@ if [ $(modinfo k10temp | grep alias | wc -l) -lt 12 ]; then
 fi
 
 
-echo2 "> Hive Start Finished"
+echo2 "> $BRAND Start Finished"
 
 
 # restart console only if X not running
