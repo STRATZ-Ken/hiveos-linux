@@ -1,7 +1,7 @@
 #[[ ! -f /lib/systemd/system/avg_khs.service ]] && ln -s /hive/etc/avg_khs.service /lib/systemd/system/avg_khs.service
 
 [Unit]
-Description=Hive average hashrate calclating service
+Description=Average hashrate calculating service
 
 [Service]
 Type=simple
