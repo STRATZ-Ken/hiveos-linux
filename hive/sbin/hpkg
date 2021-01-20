@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 #------------------------------------------------------------------------------------------------------------------
 

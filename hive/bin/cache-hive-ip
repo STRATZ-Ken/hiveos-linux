@@ -5,7 +5,8 @@
 set -o pipefail
 
 [[ -t 1 ]] && . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 skip_local_dns=0
 query_timeout=15

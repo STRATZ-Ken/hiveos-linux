@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 [[ ! -f /hive-config/.DISKLESS_AMD ]] && echo -e "${RED}Only for server upgrade${NOCOLOR}" && exit 0
 [[ -f /hive-config/.DISKLESS_AMD && $(cat /proc/mounts | grep "/ " | awk '{print $1}') == tmpfs ]] && echo -e "${RED}Diskless rig. Selfupgrade restricted${NOCOLOR}" && exit 0
 

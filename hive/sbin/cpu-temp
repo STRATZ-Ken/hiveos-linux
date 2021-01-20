@@ -1,7 +1,8 @@
 #!/bin/bash
 
 [ -t 1 ] && source colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 VERS="0.1.1"
 

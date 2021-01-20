@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 . colors
-if [[ -e /hive-config/brand.conf ]]; then
-	source /hive-config/brand.conf
+if [[ -e /etc/os-release ]]; then
+	source /etc/os-release
 else
 	BRAND="Hive"
 	DEFAULT_REPO_URL="http://download.hiveos.farm/repo/binary"

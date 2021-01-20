@@ -2,7 +2,8 @@
 #Checks if config exists, ask for rig if no config found
 
 [[ -t 1 ]] && . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 if [[ -e /hive-config/branding-logo.txt ]]; then
 	BRANDING_LOGO=$(cat /hive-config/branding-logo.txt; echo .) #echo . to preserve new lines

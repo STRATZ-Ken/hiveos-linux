@@ -5,7 +5,8 @@ DELAY=5
 FREE_SPACE_LIMIT=100
 
 [ -t 1 ] && . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 set -o pipefail
 

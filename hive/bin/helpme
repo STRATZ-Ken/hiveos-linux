@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 [ -t 1 ] && . colors
-[[ -e /hive-config/brand.conf ]] &&	source /hive-config/brand.conf || BRAND="Hive"
+[[ -e /etc/os-release ]] &&	source /etc/os-release
+[[ -z $BRAND ]] && BRAND="Hive"
 
 # ${BCYAN}Ctrl${CYAN}+${BCYAN}a d$NOCOLOR to exit, ${BCYAN}Ctrl${CYAN}+${BCYAN}a${CYAN}+${BCYAN}a$NOCOLOR to switch between
 echo -e "${YELLOW}=== Commands FAQ ===
